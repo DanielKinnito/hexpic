@@ -104,3 +104,21 @@ typings/
 .yarn/install-state.gz
 .yarn/build-state.gz
 .pnp.*
+
+# jest
+jest.config.js
+jest.setup.js
+jest.setup.ts
+jest.setup.tsx
+
+# jest-environment-jsdom
+jest-environment-jsdom
+jest-environment-jsdom.config.js
+jest-environment-jsdom.config.ts
+jest-environment-jsdom.config.tsx
+
+# demo
+demo/
+/demo
+demo
+demo/*

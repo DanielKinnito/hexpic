@@ -58,7 +58,7 @@ export class HexPic {
    * @param image The image element to convert
    * @returns A promise that resolves to the ASCII art result
    */
-  public async fromImageElement(image: HTMLImageElement): Promise<AsciiArtResult> {
+  public async fromImageElement(image: HTMLImageElement, p0: { width: number; height: number; preserveAspectRatio: boolean; }): Promise<AsciiArtResult> {
     return this.convertImage(image);
   }
 
