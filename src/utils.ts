@@ -4,25 +4,28 @@
 export const DEFAULT_CHARSET = '@%#*+=-:. ';
 
 /**
- * Converts an RGB value to grayscale using the luminosity method
+ * Converts an RGB value to grayscale using the sRGB luminance (Rec. 709) method
  * @param r Red component (0-255)
  * @param g Green component (0-255)
  * @param b Blue component (0-255)
  * @returns Grayscale value (0-255)
  */
 export function rgbToGrayscale(r: number, g: number, b: number): number {
-  // Luminosity method (perceived brightness)
-  return Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+  // sRGB luminance (perceived brightness)
+  return Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b);
 }
 
 /**
  * Adjusts the contrast of a value
  * @param value The value to adjust (0-255)
- * @param contrast Contrast factor (0-2, where 1 is normal)
+ * @param contrast Contrast factor (>0, where 1 is normal)
  * @returns Adjusted value (0-255)
  */
 export function adjustContrast(value: number, contrast: number): number {
-  return Math.min(255, Math.max(0, ((value / 255 - 0.5) * contrast + 0.5) * 255));
+  // Scale around mid-gray (128) so middle tones remain stable
+  const centered = value - 128;
+  const adjusted = centered * contrast + 128;
+  return Math.min(255, Math.max(0, adjusted));
 }
 
 /**
@@ -42,15 +45,21 @@ export function adjustBrightness(value: number, brightness: number): number {
 
 /**
  * Gets the appropriate ASCII character for a given brightness value
- * @param value Brightness value (0-255, where 0 is black)
+ * @param value Brightness value (0-255, where 0 is darkest)
  * @param charset Character set to use (darkest to lightest)
  * @returns ASCII character
  */
 export function getAsciiChar(value: number, charset: string): string {
-  // Invert value if needed (so 0 is black, 255 is white)
-  const invertedValue = 255 - value;
-  const index = Math.floor((invertedValue / 255) * (charset.length - 1));
-  return charset[Math.min(index, charset.length - 1)];
+  // Clamp brightness and normalise to [0, 1]
+  const clamped = Math.min(255, Math.max(0, value));
+  const normalized = clamped / 255;
+
+  // Apply a slight gamma curve so mid-tones map to visually pleasing characters
+  const gamma = 1.5;
+  const adjusted = Math.pow(normalized, gamma);
+
+  const index = Math.floor(adjusted * (charset.length - 1));
+  return charset[Math.min(Math.max(index, 0), charset.length - 1)];
 }
 
 /**
