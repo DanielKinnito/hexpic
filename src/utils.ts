@@ -1,7 +1,7 @@
 /**
  * Default character set for ASCII art, from darkest to lightest
  */
-export const DEFAULT_CHARSET = '@%#*+=-:. ';
+export const DEFAULT_CHARSET = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. ';
 
 /**
  * Converts an RGB value to grayscale using the sRGB luminance (Rec. 709) method
@@ -70,7 +70,7 @@ export function getAsciiChar(value: number, charset: string): string {
 export function drawBackground(canvas: HTMLCanvasElement, color: string): void {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
-  
+
   ctx.fillStyle = color;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }

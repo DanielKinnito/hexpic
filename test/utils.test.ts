@@ -47,10 +47,10 @@ describe('utils', () => {
 
   describe('getAsciiChar', () => {
     it('should return correct character for brightness', () => {
-      const charset = '@%#*+=-:. ';
-      expect(getAsciiChar(0, charset)).toBe('@'); // Darkest
+      const charset = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. ';
+      expect(getAsciiChar(0, charset)).toBe('$'); // Darkest
       expect(getAsciiChar(255, charset)).toBe(' '); // Lightest
-      expect(getAsciiChar(128, charset)).toBe('*'); // Middle
+      expect(getAsciiChar(128, charset)).toBe('L'); // Middle
     });
 
     it('should handle single character charsets', () => {

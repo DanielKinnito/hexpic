@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HexPic Portfolio Demo</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -22,11 +24,11 @@
       <div class="hero-content">
         <h1>Turn Images into<br>ASCII Art</h1>
         <p class="subtitle">A lightweight TypeScript library for your creative projects.</p>
-        
+
         <div class="controls">
           <h3>Try it yourself</h3>
           <p>Upload an image to see the magic happen. Hover over the image to reveal the ASCII version!</p>
-          
+
           <div style="margin-top: 1.5rem;">
             <label for="imageInput" class="file-label">Upload Image</label>
             <input type="file" id="imageInput" accept="image/*">
@@ -52,6 +54,12 @@
                 <input type="checkbox" id="invert"> <span style="margin-left: 0.5rem;">Invert Colors</span>
               </div>
             </div>
+            <div class="setting-group" style="grid-column: 1 / -1;">
+              <label>Charset</label>
+              <input type="text" id="charset"
+                value="$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,&quot;^`'. "
+                style="width: 100%;">
+            </div>
           </div>
         </div>
       </div>
@@ -74,6 +82,7 @@
     const contrastInput = document.getElementById('contrast');
     const brightnessInput = document.getElementById('brightness');
     const invertInput = document.getElementById('invert');
+    const charsetInput = document.getElementById('charset');
     const downloadBtn = document.getElementById('downloadBtn');
 
     let currentAscii = '';
@@ -89,6 +98,7 @@
         const contrast = parseFloat(contrastInput.value);
         const brightness = parseFloat(brightnessInput.value);
         const invert = invertInput.checked;
+        const charset = charsetInput.value;
 
         hexpic.setOptions({
           width,
@@ -96,7 +106,8 @@
           preserveAspectRatio: true,
           contrast,
           brightness,
-          invert
+          invert,
+          charset
         });
 
         let result;
@@ -108,7 +119,7 @@
 
         currentAscii = result.ascii;
         asciiOutput.textContent = result.ascii;
-        
+
         // Adjust font size based on width to fit container
         // Container is 400px wide
         // Font width is roughly 0.6em usually? 
@@ -139,7 +150,7 @@
     });
 
     // Live updates
-    [widthInput, contrastInput, brightnessInput, invertInput].forEach(input => {
+    [widthInput, contrastInput, brightnessInput, invertInput, charsetInput].forEach(input => {
       input.addEventListener('input', () => {
         if (imageInput.files[0]) {
           convertImage(imageInput.files[0]);
@@ -160,4 +171,5 @@
     });
   </script>
 </body>
+
 </html>

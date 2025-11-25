@@ -1,7 +1,7 @@
 /**
  * Default character set for ASCII art, from darkest to lightest
  */
-export declare const DEFAULT_CHARSET = "@%#*+=-:. ";
+export declare const DEFAULT_CHARSET = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
 /**
  * Converts an RGB value to grayscale using the sRGB luminance (Rec. 709) method
  * @param r Red component (0-255)

@@ -17,7 +17,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "demo": "npx serve -s",
-    "build:demo": "npm run build && cp -r dist demo/dist"
+    "build:demo": "npm run build && node -e \"require('fs').cpSync('dist', 'demo/dist', {recursive: true})\""
   },
   "keywords": [
     "ascii",
@@ -45,7 +45,10 @@
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "typescript": ">=4.0.0",
-    "react": ">=16.8.0"
+    "react": ">=16.8.0",
+    "typescript": ">=4.0.0"
+  },
+  "dependencies": {
+    "canvas": "^3.2.0"
   }
 }
