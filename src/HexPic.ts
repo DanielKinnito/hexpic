@@ -1,10 +1,10 @@
 import { AsciiArtOptions, AsciiArtResult } from './types';
-import { 
-  DEFAULT_CHARSET, 
-  rgbToGrayscale, 
-  adjustContrast, 
-  adjustBrightness, 
-  getAsciiChar, 
+import {
+  DEFAULT_CHARSET,
+  rgbToGrayscale,
+  adjustContrast,
+  adjustBrightness,
+  getAsciiChar,
   drawBackground,
   loadImage
 } from './utils';
@@ -58,8 +58,8 @@ export class HexPic {
    * @param image The image element to convert
    * @returns A promise that resolves to the ASCII art result
    */
-  public async fromImageElement(image: HTMLImageElement, p0: { width: number; height: number; preserveAspectRatio: boolean; }): Promise<AsciiArtResult> {
-    return this.convertImage(image);
+  public async fromImageElement(image: HTMLImageElement, options?: AsciiArtOptions): Promise<AsciiArtResult> {
+    return this.convertImage(image, options);
   }
 
   /**
@@ -110,22 +110,23 @@ export class HexPic {
    * @param image The image to convert
    * @private
    */
-  private async convertImage(image: HTMLImageElement): Promise<AsciiArtResult> {
-    const { 
-      width: targetWidth, 
-      height: targetHeight, 
-      contrast, 
-      brightness, 
+  private async convertImage(image: HTMLImageElement, options?: AsciiArtOptions): Promise<AsciiArtResult> {
+    const currentOptions = { ...this.options, ...options };
+    const {
+      width: targetWidth,
+      height: targetHeight,
+      contrast,
+      brightness,
       invert,
       charset,
       backgroundColor,
       preserveAspectRatio
-    } = this.options;
+    } = currentOptions;
 
     // Calculate dimensions while preserving aspect ratio if needed
     let width = targetWidth;
     let height = targetHeight;
-    
+
     if (preserveAspectRatio) {
       const aspectRatio = image.width / image.height;
       if (width / height > aspectRatio) {
@@ -155,13 +156,13 @@ export class HexPic {
         const r = data[i];
         const g = data[i + 1];
         const b = data[i + 2];
-        
+
         // Convert to grayscale and apply adjustments
         let gray = rgbToGrayscale(r, g, b);
         gray = adjustContrast(gray, contrast);
         gray = adjustBrightness(gray, brightness);
         gray = invert ? 255 - gray : gray;
-        
+
         // Get ASCII character and add to result
         ascii += getAsciiChar(gray, charset);
       }

@@ -41,8 +41,8 @@ export class HexPic {
      * @param image The image element to convert
      * @returns A promise that resolves to the ASCII art result
      */
-    async fromImageElement(image, p0) {
-        return this.convertImage(image);
+    async fromImageElement(image, options) {
+        return this.convertImage(image, options);
     }
     /**
      * Converts an image URL to ASCII art
@@ -93,8 +93,9 @@ export class HexPic {
      * @param image The image to convert
      * @private
      */
-    async convertImage(image) {
-        const { width: targetWidth, height: targetHeight, contrast, brightness, invert, charset, backgroundColor, preserveAspectRatio } = this.options;
+    async convertImage(image, options) {
+        const currentOptions = { ...this.options, ...options };
+        const { width: targetWidth, height: targetHeight, contrast, brightness, invert, charset, backgroundColor, preserveAspectRatio } = currentOptions;
         // Calculate dimensions while preserving aspect ratio if needed
         let width = targetWidth;
         let height = targetHeight;

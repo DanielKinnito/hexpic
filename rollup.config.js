@@ -21,6 +21,9 @@ export default {
       name: 'HexPic',
       format: 'umd',
       sourcemap: true,
+      globals: {
+        react: 'React',
+      },
     },
   ],
   plugins: [
@@ -32,4 +35,5 @@ export default {
     }),
     terser(),
   ],
+  external: ['react'],
 };

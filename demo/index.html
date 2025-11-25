@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HexPic Portfolio Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">HexPic</div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Projects</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <div class="hero-content">
+        <h1>Turn Images into<br>ASCII Art</h1>
+        <p class="subtitle">A lightweight TypeScript library for your creative projects.</p>
+        
+        <div class="controls">
+          <h3>Try it yourself</h3>
+          <p>Upload an image to see the magic happen. Hover over the image to reveal the ASCII version!</p>
+          
+          <div style="margin-top: 1.5rem;">
+            <label for="imageInput" class="file-label">Upload Image</label>
+            <input type="file" id="imageInput" accept="image/*">
+            <button id="downloadBtn" class="btn" disabled>Download ASCII</button>
+          </div>
+
+          <div class="settings">
+            <div class="setting-group">
+              <label>Width (chars)</label>
+              <input type="number" id="width" value="100">
+            </div>
+            <div class="setting-group">
+              <label>Contrast</label>
+              <input type="range" id="contrast" min="0" max="2" step="0.1" value="1">
+            </div>
+            <div class="setting-group">
+              <label>Brightness</label>
+              <input type="range" id="brightness" min="-1" max="1" step="0.1" value="0">
+            </div>
+            <div class="setting-group">
+              <label>Invert</label>
+              <div style="display: flex; align-items: center;">
+                <input type="checkbox" id="invert"> <span style="margin-left: 0.5rem;">Invert Colors</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-container" id="profileContainer">
+        <img src="profile.png" alt="Profile" class="profile-image" id="profileImage">
+        <div class="ascii-output" id="asciiOutput"></div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import HexPic from './dist/index.esm.js';
+
+    const hexpic = new HexPic();
+    const imageInput = document.getElementById('imageInput');
+    const profileImage = document.getElementById('profileImage');
+    const asciiOutput = document.getElementById('asciiOutput');
+    const widthInput = document.getElementById('width');
+    const contrastInput = document.getElementById('contrast');
+    const brightnessInput = document.getElementById('brightness');
+    const invertInput = document.getElementById('invert');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    let currentAscii = '';
+
+    // Initialize with default image
+    window.addEventListener('load', () => {
+      convertImage(profileImage);
+    });
+
+    async function convertImage(source) {
+      try {
+        const width = parseInt(widthInput.value) || 100;
+        const contrast = parseFloat(contrastInput.value);
+        const brightness = parseFloat(brightnessInput.value);
+        const invert = invertInput.checked;
+
+        hexpic.setOptions({
+          width,
+          height: width, // Keep it roughly square for the container, but aspect ratio will override
+          preserveAspectRatio: true,
+          contrast,
+          brightness,
+          invert
+        });
+
+        let result;
+        if (source instanceof File) {
+          result = await hexpic.fromFile(source);
+        } else {
+          result = await hexpic.fromImageElement(source);
+        }
+
+        currentAscii = result.ascii;
+        asciiOutput.textContent = result.ascii;
+        
+        // Adjust font size based on width to fit container
+        // Container is 400px wide
+        // Font width is roughly 0.6em usually? 
+        // Let's try to fit 'width' characters into 400px
+        const charWidth = 400 / result.width;
+        // Monospace font aspect ratio is usually around 0.6
+        const fontSize = charWidth / 0.6;
+        asciiOutput.style.fontSize = `${fontSize}px`;
+        asciiOutput.style.lineHeight = `${fontSize}px`;
+
+        downloadBtn.disabled = false;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    imageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          profileImage.src = e.target.result;
+          // Wait for image to load before converting
+          profileImage.onload = () => convertImage(file);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Live updates
+    [widthInput, contrastInput, brightnessInput, invertInput].forEach(input => {
+      input.addEventListener('input', () => {
+        if (imageInput.files[0]) {
+          convertImage(imageInput.files[0]);
+        } else {
+          convertImage(profileImage);
+        }
+      });
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const blob = new Blob([currentAscii], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'hexpic-art.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>

@@ -78,6 +78,48 @@ const result = await hexpic.fromUrl('path/to/image.jpg');
 document.getElementById('output').textContent = result.ascii;
 ```
 
+### Usage with React / Next.js
+
+HexPic includes a built-in hook for easy integration with React applications.
+
+```typescript
+import { useHexPic } from 'hexpic';
+
+function AsciiArtComponent() {
+  const { ascii, convert, isLoading, error } = useHexPic({
+    width: 60,
+    height: 30,
+    contrast: 1.2
+  });
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      await convert(file);
+    }
+  };
+
+  return (
+    <div>
+      <input type="file" onChange={handleFileChange} />
+      
+      {isLoading && <p>Converting...</p>}
+      {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
+      
+      <pre style={{ 
+        fontFamily: 'monospace', 
+        lineHeight: '1em', 
+        whiteSpace: 'pre',
+        backgroundColor: 'black',
+        color: 'white'
+      }}>
+        {ascii}
+      </pre>
+    </div>
+  );
+}
+```
+
 ## API
 
 ### `new HexPic(options?: AsciiArtOptions)`

@@ -14,7 +14,7 @@ describe('utils', () => {
       expect(rgbToGrayscale(255, 255, 255)).toBe(255); // White
       expect(rgbToGrayscale(128, 128, 128)).toBe(128); // Gray
       // Test with different weights
-      expect(rgbToGrayscale(100, 150, 200)).toBe(143); // 0.299*100 + 0.587*150 + 0.114*200
+      expect(rgbToGrayscale(100, 150, 200)).toBe(143); // 0.2126*100 + 0.7152*150 + 0.0722*200 = 21.26 + 107.28 + 14.44 = 142.98 -> 143
     });
   });
 
@@ -28,7 +28,7 @@ describe('utils', () => {
     it('should decrease contrast correctly', () => {
       expect(adjustContrast(128, 0.5)).toBe(128); // Middle gray stays the same
       expect(adjustContrast(200, 0.5)).toBe(164); // Moved toward middle
-      expect(adjustContrast(50, 0.5)).toBe(92); // Moved toward middle
+      expect(adjustContrast(50, 0.5)).toBe(89); // Moved toward middle
     });
   });
 
