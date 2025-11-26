@@ -20,6 +20,8 @@ npm install hexpic
 
 ## Usage
 
+```typescript
+const hexpic = new HexPic({
   width: 60,
   height: 30,
   charset: '@%#*+=-:. ', // Default charset
