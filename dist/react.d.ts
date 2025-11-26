@@ -1,3 +1,4 @@
+import React from 'react';
 import { AsciiArtOptions, AsciiArtResult } from './types';
 export interface UseHexPicResult {
     ascii: string;
@@ -14,4 +15,10 @@ export interface UseHexPicResult {
  * @returns Object containing the result, loading state, error, and convert function
  */
 export declare function useHexPic(defaultOptions?: AsciiArtOptions): UseHexPicResult;
+export interface HexPicImageProps extends React.HTMLAttributes<HTMLDivElement> {
+    src: string;
+    alt?: string;
+    options?: AsciiArtOptions;
+}
+export declare const HexPicImage: React.FC<HexPicImageProps>;
 //# sourceMappingURL=react.d.ts.map

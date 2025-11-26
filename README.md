@@ -1,15 +1,16 @@
 # HexPic
 
-A lightweight TypeScript library for converting images to ASCII art in the browser.
+> A lightweight, zero-dependency TypeScript library to convert images into high-quality ASCII art. Now with React support!
+
+HexPic allows you to easily transform images into ASCII art directly in the browser or Node.js. It supports various input formats (URL, File, HTMLImageElement) and offers customization options like contrast, brightness, and character sets.
 
 ## Features
 
-- Convert images to ASCII art directly in the browser
-- Support for various image sources (URL, File, ImageElement)
-- Customizable output (width, height, character set, contrast, brightness)
-- Preserves aspect ratio
-- TypeScript support
-- Zero dependencies
+- 🚀 **Zero Dependencies**: Lightweight and fast.
+- ⚛️ **React Support**: Includes a `useHexPic` hook and `<HexPicImage />` component.
+- 🎨 **Customizable**: Adjust contrast, brightness, dimensions, and character sets.
+- 📱 **Responsive**: Preserves aspect ratio and scales with your layout.
+- 🔧 **TypeScript**: Fully typed for a great developer experience.
 
 ## Installation
 
@@ -19,52 +20,6 @@ npm install hexpic
 
 ## Usage
 
-### Basic Usage
-
-```typescript
-import HexPic from 'hexpic';
-
-// Create a new instance with default options
-const hexpic = new HexPic();
-
-// Convert an image from a URL
-const result = await hexpic.fromUrl('https://example.com/image.jpg');
-console.log(result.ascii);
-
-// Or from a file input
-const fileInput = document.querySelector('input[type="file"]');
-fileInput.addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const result = await hexpic.fromFile(file);
-    console.log(result.ascii);
-  }
-});
-```
-
-### Options
-
-You can customize the ASCII art generation with these options:
-
-```typescript
-const options = {
-  width: 80,                  // Width of the output (in characters)
-  height: 40,                 // Height of the output (in characters)
-  charset: '@%#*+=-:. ',      // Character set (darkest to lightest)
-  invert: false,              // Invert brightness
-  contrast: 1.0,              // Contrast adjustment (0-2)
-  brightness: 0,              // Brightness adjustment (-1 to 1)
-  preserveAspectRatio: true,  // Maintain original image aspect ratio
-  backgroundColor: '#000000'  // Background color for transparent images
-};
-
-const hexpic = new HexPic(options);
-```
-
-### Example with Custom Options
-
-```typescript
-const hexpic = new HexPic({
   width: 60,
   height: 30,
   charset: '@%#*+=-:. ', // Default charset
@@ -76,6 +31,7 @@ const hexpic = new HexPic({
 // Convert and display the result
 const result = await hexpic.fromUrl('path/to/image.jpg');
 document.getElementById('output').textContent = result.ascii;
+
 ```
 
 ### Usage with React / Next.js

@@ -20,7 +20,8 @@ const DEFAULT_OPTIONS: Required<AsciiArtOptions> = {
   contrast: 1.0,
   brightness: 0,
   preserveAspectRatio: true,
-  backgroundColor: '#000000'
+  backgroundColor: '#000000',
+  fontAspectRatio: 0.55
 };
 
 /**
@@ -120,7 +121,8 @@ export class HexPic {
       invert,
       charset,
       backgroundColor,
-      preserveAspectRatio
+      preserveAspectRatio,
+      fontAspectRatio
     } = currentOptions;
 
     // Calculate dimensions while preserving aspect ratio if needed
@@ -129,10 +131,14 @@ export class HexPic {
 
     if (preserveAspectRatio) {
       const aspectRatio = image.width / image.height;
-      if (width / height > aspectRatio) {
-        width = Math.floor(height * aspectRatio);
+      // Adjust for font aspect ratio (width/height of a character)
+      // If characters are taller than wide (ratio < 1), we need fewer rows to cover the same vertical space
+      const correctedAspectRatio = aspectRatio / fontAspectRatio;
+
+      if (width / height > correctedAspectRatio) {
+        width = Math.floor(height * correctedAspectRatio);
       } else {
-        height = Math.floor(width / aspectRatio);
+        height = Math.floor(width / correctedAspectRatio);
       }
     }
 

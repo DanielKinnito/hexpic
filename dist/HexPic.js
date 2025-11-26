@@ -10,7 +10,8 @@ const DEFAULT_OPTIONS = {
     contrast: 1.0,
     brightness: 0,
     preserveAspectRatio: true,
-    backgroundColor: '#000000'
+    backgroundColor: '#000000',
+    fontAspectRatio: 0.55
 };
 /**
  * Main class for converting images to ASCII art
@@ -95,17 +96,20 @@ export class HexPic {
      */
     async convertImage(image, options) {
         const currentOptions = { ...this.options, ...options };
-        const { width: targetWidth, height: targetHeight, contrast, brightness, invert, charset, backgroundColor, preserveAspectRatio } = currentOptions;
+        const { width: targetWidth, height: targetHeight, contrast, brightness, invert, charset, backgroundColor, preserveAspectRatio, fontAspectRatio } = currentOptions;
         // Calculate dimensions while preserving aspect ratio if needed
         let width = targetWidth;
         let height = targetHeight;
         if (preserveAspectRatio) {
             const aspectRatio = image.width / image.height;
-            if (width / height > aspectRatio) {
-                width = Math.floor(height * aspectRatio);
+            // Adjust for font aspect ratio (width/height of a character)
+            // If characters are taller than wide (ratio < 1), we need fewer rows to cover the same vertical space
+            const correctedAspectRatio = aspectRatio / fontAspectRatio;
+            if (width / height > correctedAspectRatio) {
+                width = Math.floor(height * correctedAspectRatio);
             }
             else {
-                height = Math.floor(width / aspectRatio);
+                height = Math.floor(width / correctedAspectRatio);
             }
         }
         // Set canvas dimensions

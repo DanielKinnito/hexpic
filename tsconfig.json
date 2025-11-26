@@ -11,9 +11,22 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "lib": ["es2018", "dom"],
-    "types": ["jest", "node"]
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "types": [
+      "jest",
+      "node"
+    ],
+    "jsx": "react-jsx"
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts"
+  ]
 }

@@ -20,6 +20,7 @@ export default {
       file: 'dist/index.umd.js', // UMD
       name: 'HexPic',
       format: 'umd',
+      exports: 'named',
       sourcemap: true,
       globals: {
         react: 'React',

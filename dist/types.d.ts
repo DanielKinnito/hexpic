@@ -18,6 +18,8 @@ export interface AsciiArtOptions {
     preserveAspectRatio?: boolean;
     /** Background color for transparent images (in hex format, e.g., '#000000') */
     backgroundColor?: string;
+    /** Aspect ratio of the font used for display (width/height). Default is ~0.55 */
+    fontAspectRatio?: number;
 }
 /**
  * Represents the result of ASCII art conversion
